@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier tâche{% endblock %}
+
+{% block body %}
+<div class="overlay" style="display:block;"></div>
+
+<aside class="drawer open"
+       style="position:relative; right:auto; width:560px; max-width:95vw; margin:40px auto; height:auto;">
+
+    <div class="drawer-head">
+        <div>
+            <h3 class="drawer-title">Modifier tâche</h3>
+            <div class="drawer-sub">Mettre à jour une tâche (CRUD Symfony)</div>
+        </div>
+
+        <a class="icon-btn" href="{{ path('app_task_index') }}" title="Fermer">
+            <i class="fa-solid fa-xmark"></i>
+        </a>
+    </div>
+
+    {{ form_start(form) }}
+
+    <div class="drawer-body">
+
+        <div class="field">
+            <i class="fa-solid fa-heading"></i>
+            {{ form_widget(form.title, {'attr': {'placeholder':'Titre'}}) }}
+        </div>
+
+        <div class="field">
+            <i class="fa-solid fa-align-left"></i>
+            {{ form_widget(form.description, {'attr': {'placeholder':'Description'}}) }}
+        </div>
+
+        <div class="grid2">
+            <div class="field">
+                <i class="fa-solid fa-flag"></i>
+                {{ form_widget(form.priority) }}
+            </div>
+
+            <div class="field">
+                <i class="fa-solid fa-layer-group"></i>
+                {{ form_widget(form.status) }}
+            </div>
+        </div>
+
+        <div class="grid2">
+            <div class="field">
+                <i class="fa-regular fa-calendar"></i>
+                {{ form_widget(form.dueAt) }}
+            </div>
+
+            <div class="field">
+                <i class="fa-solid fa-folder"></i>
+                {{ form_widget(form.category) }}
+            </div>
+        </div>
+
+    </div>
+
+    <div class="drawer-foot">
+        <a class="btn" href="{{ path('app_task_index') }}">
+            <i class="fa-regular fa-circle-xmark"></i> Annuler
+        </a>
+
+        <button class="btn primary" type="submit">
+            <i class="fa-solid fa-check"></i> Enregistrer
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+
+</aside>
+{% endblock %}

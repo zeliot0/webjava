@@ -5,11 +5,13 @@
 {% block body %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-<div class="layout" id="appLayout">
+<div class="layout layout-pro" id="appLayout">
 
+  <!-- overlay mobile sidebar -->
   <div class="sb-overlay" id="sbOverlay"></div>
 
-  <aside class="sidebar" id="sidebar">
+  <!-- ✅ LEFT SIDEBAR -->
+  <aside class="sidebar sidebar-pro" id="sidebar">
     <div class="sb-head">
       <div class="sb-brand">
         <div class="sb-logo"><i class="fa-solid fa-bolt"></i></div>
@@ -27,23 +29,33 @@
     <div class="sb-section">Workspace</div>
 
     <nav class="sb-nav">
-      <a class="sb-item" href="#"><i class="fa-solid fa-house"></i><span>Dashboard</span></a>
-
+      <a class="sb-item" href="#"><i class="fa-solid fa-house"></i><span>Home</span></a>
       <a class="sb-item active" href="#">
         <i class="fa-solid fa-list-check"></i>
         <span>Tasks</span>
         <span class="sb-badge" id="sbTasksCount">0</span>
       </a>
+      <a class="sb-item" href="#"><i class="fa-solid fa-bullseye"></i><span>Focus</span></a>
 
-      <a class="sb-item" href="#"><i class="fa-solid fa-layer-group"></i><span>Projects</span></a>
-      <a class="sb-item" href="#"><i class="fa-solid fa-calendar-days"></i><span>Calendar</span></a>
-      <a class="sb-item" href="#"><i class="fa-regular fa-note-sticky"></i><span>Notes</span></a>
+      <div class="sb-sep"></div>
+
+      <div class="sb-section">Day</div>
+      <a class="sb-item" href="#"><i class="fa-regular fa-calendar"></i><span>Daily planning</span></a>
+      <a class="sb-item" href="#"><i class="fa-regular fa-clock"></i><span>Daily shutdown</span></a>
+      <a class="sb-item" href="#"><i class="fa-regular fa-star"></i><span>Daily highlights</span></a>
+
+      <div class="sb-sep"></div>
+
+      <div class="sb-section">Week</div>
+      <a class="sb-item" href="#"><i class="fa-regular fa-calendar-days"></i><span>Weekly planning</span></a>
+      <a class="sb-item" href="#"><i class="fa-regular fa-rectangle-list"></i><span>Weekly review</span></a>
 
       <div class="sb-sep"></div>
 
       <a class="sb-item" href="#"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
     </nav>
 
+    <!-- profile footer -->
     <div class="sb-profile">
       <div class="sb-prof-top">
         <div class="sb-avatar">NX</div>
@@ -60,127 +72,176 @@
     </div>
   </aside>
 
-  <main class="main">
+  <!-- ✅ MAIN CONTENT -->
+  <main class="main main-pro">
 
-    <div class="topbar">
-      <div class="brand">
-        <div class="brand-badge"><i class="fa-solid fa-bolt"></i></div>
-        <div>
-          <div class="brand-name">NEXA</div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button class="btn" id="topSidebarBtn" title="Afficher/Masquer la taskbar">
+    <!-- top header (Sunsama-like) -->
+    <div class="topbar topbar-pro">
+      <div class="top-left">
+        <button class="btn icon-only" id="topSidebarBtn" title="Afficher/Masquer la taskbar">
           <i class="fa-solid fa-bars"></i>
         </button>
 
-        <button class="btn primary" id="newBtn"><i class="fa-solid fa-plus"></i> Nouvelle tâche</button>
+        <div class="brand-pro">
+          <div class="brand-name">NEXA</div>
+          <div class="brand-sub">Task Hub</div>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <button class="btn subtle" type="button">
+          <i class="fa-regular fa-calendar"></i> Today
+        </button>
+
+        <div class="seg">
+          <button class="seg-btn is-active" type="button"><i class="fa-solid fa-table-columns"></i> Board</button>
+          <button class="seg-btn" type="button"><i class="fa-regular fa-calendar-days"></i> Calendars</button>
+        </div>
+
+        <button class="btn primary" id="newBtn">
+          <i class="fa-solid fa-plus"></i> Nouvelle tâche
+        </button>
 
         <button class="btn primary ghost" id="newCatBtn" type="button">
           <i class="fa-solid fa-folder-plus"></i> Nouvelle catégorie
         </button>
 
-        <button class="toggle" id="themeToggle" title="Changer de thème"><i class="fas fa-moon"></i></button>
+        <button class="toggle" id="themeToggle" title="Changer de thème">
+          <i class="fas fa-moon"></i>
+        </button>
       </div>
     </div>
 
-    <div class="wrap">
-      <div class="toolbar">
-        <div class="field">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <input id="searchInput" placeholder="Rechercher (titre, description)..." />
+    <div class="content-grid">
 
-          <!-- ✅ VOICE BUTTON -->
-          <button id="voiceBtn" class="icon-btn" type="button" title="Recherche vocale">
-            <i class="fa-solid fa-microphone"></i>
+      <!-- center column -->
+      <section class="center">
+
+        <!-- minimal toolbar (like screenshot) -->
+        <div class="toolbar toolbar-pro">
+          <div class="field field-pro">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input id="searchInput" placeholder="Rechercher (titre, description)..." />
+
+            <button id="voiceBtn" class="icon-btn icon-btn-pro" type="button" title="Recherche vocale">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+          </div>
+
+          <div class="field field-pro">
+            <i class="fa-solid fa-flag"></i>
+            <select id="prioFilter">
+              <option value="all">Toutes priorités</option>
+              <option value="low">Basse</option>
+              <option value="med">Moyenne</option>
+              <option value="high">Haute</option>
+            </select>
+          </div>
+
+          <div class="field field-pro">
+            <i class="fa-solid fa-layer-group"></i>
+            <select id="statusFilter">
+              <option value="all">Tous statuts</option>
+              <option value="todo">À faire</option>
+              <option value="doing">En cours</option>
+              <option value="done">Terminé</option>
+            </select>
+          </div>
+
+          <button class="btn subtle" id="clearBtn">
+            <i class="fa-solid fa-broom"></i> Reset filtres
           </button>
         </div>
 
-        <div class="field">
-          <i class="fa-solid fa-flag"></i>
-          <select id="prioFilter">
-            <option value="all">Toutes priorités</option>
-            <option value="low">Basse</option>
-            <option value="med">Moyenne</option>
-            <option value="high">Haute</option>
-          </select>
+        <!-- kpis (smaller / enterprise) -->
+        <div class="kpis kpis-pro">
+          <div class="kpi kpi-pro">
+            <div class="kpi-title">Total</div>
+            <div class="kpi-value" id="kpiTotal">0</div>
+          </div>
+
+          <div class="kpi kpi-pro">
+            <div class="kpi-title">En cours</div>
+            <div class="kpi-value" id="kpiDoing">0</div>
+          </div>
+
+          <div class="kpi kpi-pro">
+            <div class="kpi-title">Priorité haute</div>
+            <div class="kpi-value" id="kpiHigh">0</div>
+          </div>
         </div>
 
-        <div class="field">
-          <i class="fa-solid fa-layer-group"></i>
-          <select id="statusFilter">
-            <option value="all">Tous statuts</option>
-            <option value="todo">À faire</option>
-            <option value="doing">En cours</option>
-            <option value="done">Terminé</option>
-          </select>
-        </div>
-
-        <button class="btn" id="clearBtn">
-          <i class="fa-solid fa-broom"></i> Reset filtres
-        </button>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi">
-          <div class="kpi-top">
-            <div>
-              <div class="kpi-title">Total</div>
-              <div class="kpi-value" id="kpiTotal">0</div>
+        <!-- board -->
+        <div class="board board-pro">
+          <div class="col col-pro" data-col="todo">
+            <div class="col-header col-header-pro">
+              <div class="col-title"><span class="dot todo"></span> À faire</div>
+              <div class="col-count" id="countTodo">0</div>
             </div>
-            <div class="kpi-chip"><i class="fa-solid fa-database"></i> DB</div>
+            <div class="dropzone" id="zone-todo"></div>
           </div>
-        </div>
 
-        <div class="kpi">
-          <div class="kpi-top">
-            <div>
-              <div class="kpi-title">En cours</div>
-              <div class="kpi-value" id="kpiDoing">0</div>
+          <div class="col col-pro" data-col="doing">
+            <div class="col-header col-header-pro">
+              <div class="col-title"><span class="dot doing"></span> En cours</div>
+              <div class="col-count" id="countDoing">0</div>
             </div>
-            <div class="kpi-chip"><i class="fa-solid fa-bolt"></i> Focus</div>
+            <div class="dropzone" id="zone-doing"></div>
           </div>
-        </div>
 
-        <div class="kpi">
-          <div class="kpi-top">
-            <div>
-              <div class="kpi-title">Priorité haute</div>
-              <div class="kpi-value" id="kpiHigh">0</div>
+          <div class="col col-pro" data-col="done">
+            <div class="col-header col-header-pro">
+              <div class="col-title"><span class="dot done"></span> Terminé</div>
+              <div class="col-count" id="countDone">0</div>
             </div>
-            <div class="kpi-chip"><i class="fa-solid fa-flag"></i> Critique</div>
+            <div class="dropzone" id="zone-done"></div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="board">
-        <div class="col" data-col="todo">
-          <div class="col-header">
-            <div class="col-title"><span class="dot todo"></span> À faire</div>
-            <div class="col-count" id="countTodo">0</div>
-          </div>
-          <div class="dropzone" id="zone-todo"></div>
+      <!-- ✅ RIGHT PANEL (calendar-like) -->
+      <aside class="right right-pro">
+        <div class="right-head">
+          <div class="right-title">Calendars</div>
+          <div class="right-sub">Today</div>
         </div>
 
-        <div class="col" data-col="doing">
-          <div class="col-header">
-            <div class="col-title"><span class="dot doing"></span> En cours</div>
-            <div class="col-count" id="countDoing">0</div>
+        <!-- placeholder schedule UI (static for now) -->
+        <div class="daycard">
+          <div class="day-top">
+            <div class="day-num">MON</div>
+            <div class="day-date">10</div>
           </div>
-          <div class="dropzone" id="zone-doing"></div>
-        </div>
 
-        <div class="col" data-col="done">
-          <div class="col-header">
-            <div class="col-title"><span class="dot done"></span> Terminé</div>
-            <div class="col-count" id="countDone">0</div>
+          <div class="timeline">
+            <div class="time-row"><span>6 AM</span></div>
+            <div class="time-row"><span>7 AM</span></div>
+            <div class="event e-blue" style="top: 54px; height: 42px;">
+              Morning routine <span class="small">7 - 7:30</span>
+            </div>
+
+            <div class="time-row"><span>10 AM</span></div>
+            <div class="event e-orange" style="top: 180px; height: 62px;">
+              Product demo <span class="small">10 - 11</span>
+            </div>
+
+            <div class="time-row"><span>12 PM</span></div>
+            <div class="event e-blue" style="top: 280px; height: 50px;">
+              Lunch <span class="small">12 - 1</span>
+            </div>
+
+            <div class="time-row"><span>1 PM</span></div>
+            <div class="event e-purple" style="top: 330px; height: 90px;">
+              Review prototype <span class="small">1 - 3</span>
+            </div>
           </div>
-          <div class="dropzone" id="zone-done"></div>
         </div>
-      </div>
+      </aside>
     </div>
 
+    <!-- =======================
+         DRAWER TASK
+         ======================= -->
     <div class="overlay" id="overlay"></div>
     <aside class="drawer" id="drawer">
       <div class="drawer-head">
@@ -243,6 +304,9 @@
       </div>
     </aside>
 
+    <!-- =======================
+         DRAWER CATEGORY
+         ======================= -->
     <div class="overlay" id="catOverlay"></div>
     <aside class="drawer" id="catDrawer">
       <div class="drawer-head">
@@ -326,11 +390,43 @@
       </div>
     </aside>
 
+    <!-- ✅ TOAST HOST -->
+    <div id="toastHost" class="toast-host" aria-live="polite" aria-atomic="true"></div>
+
     <style>
       /* ✅ VOICE STATE */
       #voiceBtn.listening{
         background: rgba(255,0,0,.08);
         border: 1px solid rgba(255,0,0,.35);
+      }
+
+      /* ✅ TOAST */
+      .toast-host{
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 999999;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+      }
+
+      .toast{
+        pointer-events: auto;
+        min-width: 280px;
+        max-width: 460px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(20, 20, 24, .92);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,.10);
+        box-shadow: 0 18px 45px rgba(0,0,0,.35);
+        backdrop-filter: blur(10px);
+        display: grid;
+        grid-template-columns: 18px 1fr 24px;
+        gap: 10px;
+        align-items: start;
       }
     </style>
 

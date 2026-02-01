@@ -75,16 +75,14 @@ console.log("TASK UI JS LOADED ✅");
   const countDoing = document.getElementById("countDoing");
   const countDone = document.getElementById("countDone");
 
-  // Sidebar (task bar left)
+  // Sidebar
   const sidebar = document.getElementById("sidebar");
   const sbOverlay = document.getElementById("sbOverlay");
   const sbCollapse = document.getElementById("sbCollapse");
   const topSidebarBtn = document.getElementById("topSidebarBtn");
   const sbTasksCount = document.getElementById("sbTasksCount");
 
-  // =========================
-  // CATEGORY DRAWER refs (top button)
-  // =========================
+  // CATEGORY DRAWER refs
   const newCatBtn = document.getElementById("newCatBtn");
   const catOverlay = document.getElementById("catOverlay");
   const catDrawer = document.getElementById("catDrawer");
@@ -111,9 +109,70 @@ console.log("TASK UI JS LOADED ✅");
   let allTasks = [];
   let categories = [];
 
+  function escapeHtml(s) {
+    return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;",
+    }[c]));
+  }
+
   // =========================
-  // HTTP
+  // ✅ TOAST
   // =========================
+  const toastHost = document.getElementById("toastHost");
+
+  function showToast({ type = "info", title = "Info", message = "", ms = 5500 } = {}) {
+    if (!toastHost) {
+      console.warn("toastHost not found");
+      return;
+    }
+
+    const icons = {
+      success: "fa-circle-check",
+      error: "fa-circle-exclamation",
+      info: "fa-circle-info",
+    };
+
+    const el = document.createElement("div");
+    el.className = `toast ${type}`;
+    el.innerHTML = `
+      <div class="t-icon"><i class="fa-solid ${icons[type] || icons.info}"></i></div>
+      <div>
+        <p class="t-title">${escapeHtml(title)}</p>
+        <p class="t-msg">${escapeHtml(message)}</p>
+      </div>
+      <button class="t-close" type="button" aria-label="Close">×</button>
+    `;
+
+    const close = () => {
+      el.style.animation = "toastOut .15s ease-in forwards";
+      setTimeout(() => el.remove(), 160);
+    };
+
+    el.querySelector(".t-close")?.addEventListener("click", close);
+    toastHost.appendChild(el);
+
+    if (ms > 0) setTimeout(close, ms);
+  }
+
+  // =========================
+  // HTTP (toast + PHP errors)
+  // =========================
+  function formatApiErrors(data, fallbackText) {
+    if (data?.errors && typeof data.errors === "object") {
+      const lines = [];
+      for (const [field, msgs] of Object.entries(data.errors)) {
+        const arr = Array.isArray(msgs) ? msgs : [String(msgs)];
+        lines.push(`${field}: ${arr.join(" | ")}`);
+      }
+      return lines.join("\n");
+    }
+    return data?.error ?? fallbackText ?? "Erreur API";
+  }
+
   async function http(url, method, body) {
     const res = await fetch(url, {
       method,
@@ -129,64 +188,31 @@ console.log("TASK UI JS LOADED ✅");
 
     if (!res.ok) {
       console.error("API ERROR:", method, url, res.status, data || text);
-      alert(`Erreur API ${res.status}: ` + (data?.error ?? text));
-      throw new Error(data?.error ?? text);
+
+      showToast({
+        type: "error",
+        title: `Erreur API ${res.status}`,
+        message: formatApiErrors(data, text),
+        ms: 7000,
+      });
+
+      throw new Error(formatApiErrors(data, text));
     }
+
     return data;
   }
 
-  function escapeHtml(s) {
-    return String(s ?? "").replace(/[&<>"']/g, (c) => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;",
-    }[c]));
-  }
-
   // =========================
-  // ✅ VOICE SEARCH (FIXED)
+  // ✅ VOICE SEARCH
   // =========================
   const voiceBtn = document.getElementById("voiceBtn");
-  console.log("VOICE DEBUG:", {
-  voiceBtnFound: !!document.getElementById("voiceBtn"),
-  searchInputFound: !!document.getElementById("searchInput"),
-  SpeechRecognitionExists: !!(window.SpeechRecognition || window.webkitSpeechRecognition),
-  isSecureContext: window.isSecureContext,
-  protocol: location.protocol,
-  host: location.host
-});
-
-// Petit banner visuel si bloqué
-(function showVoiceBannerIfBlocked() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    console.warn("❌ SpeechRecognition not supported by this browser.");
-    return;
-  }
-  if (!window.isSecureContext) {
-    console.warn("❌ Not a secure context. Voice will be blocked.");
-    const div = document.createElement("div");
-    div.style.cssText =
-      "position:fixed;bottom:16px;left:16px;right:16px;z-index:99999;padding:12px 14px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.2);box-shadow:0 8px 30px rgba(0,0,0,.12);font-family:system-ui;";
-    div.innerHTML =
-      "🎤 <b>Recherche vocale bloquée</b> : ouvre l’app en <b>HTTPS</b> ou <b>http://localhost</b> (sinon Chrome bloque le micro).";
-    document.body.appendChild(div);
-  }
-})();
-
 
   function initVoiceSearch() {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
-    if (!voiceBtn) {
-      console.warn("voiceBtn not found");
-      return null;
-    }
+    if (!voiceBtn) return null;
 
     if (!SR) {
-      console.warn("SpeechRecognition not supported.");
       voiceBtn.style.display = "none";
       return null;
     }
@@ -206,10 +232,7 @@ console.log("TASK UI JS LOADED ✅");
         : '<i class="fa-solid fa-microphone"></i>';
     };
 
-    recog.onstart = () => {
-      console.log("🎤 Voice START");
-      setUI(true);
-    };
+    recog.onstart = () => setUI(true);
 
     recog.onresult = (e) => {
       let transcript = "";
@@ -217,8 +240,6 @@ console.log("TASK UI JS LOADED ✅");
         transcript += e.results[i][0].transcript;
       }
       transcript = transcript.trim();
-      console.log("🎤 Transcript:", transcript);
-
       if (searchInput) {
         searchInput.value = transcript;
         render();
@@ -226,37 +247,41 @@ console.log("TASK UI JS LOADED ✅");
     };
 
     recog.onerror = (e) => {
-      console.error("🎤 Voice ERROR:", e.error, e.message || "");
       setUI(false);
 
       if (e.error === "not-allowed" || e.error === "service-not-allowed") {
-        alert("⚠️ Autorise le micro (icône 🔒 à gauche de l’URL) puis recharge la page.");
-      } else if (e.error === "network") {
-        alert("⚠️ Problème réseau / service. Essaie Chrome + HTTPS/localhost.");
+        showToast({
+          type: "error",
+          title: "Micro bloqué",
+          message: "Autorise le micro (icône 🔒) puis recharge la page.",
+          ms: 7000,
+        });
+      } else {
+        showToast({
+          type: "error",
+          title: "Erreur micro",
+          message: e.error || "Erreur SpeechRecognition",
+          ms: 6500,
+        });
       }
     };
 
-    recog.onend = () => {
-      console.log("🎤 Voice END");
-      setUI(false);
-    };
+    recog.onend = () => setUI(false);
 
     return {
       toggle: () => {
         try {
           if (!listening) recog.start();
           else recog.stop();
-        } catch (err) {
-          console.error("🎤 start/stop error:", err);
-          alert("⚠️ Impossible de démarrer la voix. Vérifie HTTPS/permission micro.");
+        } catch (_) {
           setUI(false);
         }
-      }
+      },
     };
   }
 
   // =========================
-  // SIDEBAR FIX (NO MOVE)
+  // SIDEBAR
   // =========================
   function initSidebar() {
     if (!sidebar) return;
@@ -290,17 +315,12 @@ console.log("TASK UI JS LOADED ✅");
       setState(st.mode === "hidden" ? "open" : "hidden");
     });
 
-    const openMobile = () => {
-      sidebar.classList.add("open");
-      sbOverlay?.classList.add("open");
-    };
     const closeMobile = () => {
       sidebar.classList.remove("open");
       sbOverlay?.classList.remove("open");
     };
-    sbOverlay?.addEventListener("click", closeMobile);
-    topSidebarBtn?.addEventListener("dblclick", openMobile);
 
+    sbOverlay?.addEventListener("click", closeMobile);
     applyState();
   }
 
@@ -357,19 +377,17 @@ console.log("TASK UI JS LOADED ✅");
     };
   }
 
+  // ✅ validation JS supprimée (PHP only)
   async function saveOrUpdate() {
     const payload = getPayload();
-
-    if (!payload.title) {
-      alert("Le titre est obligatoire");
-      return;
-    }
 
     if (!editingId) {
       await http(api.create, "POST", payload);
     } else {
       await http(`${api.updateBase}/${editingId}`, "PATCH", payload);
     }
+
+    showToast({ type: "success", title: "Succès", message: "Tâche enregistrée ✅", ms: 3000 });
 
     closeDrawer();
     await refreshTasks();
@@ -380,14 +398,18 @@ console.log("TASK UI JS LOADED ✅");
     if (!editingId) return;
     const ok = confirm("Supprimer cette tâche ?");
     if (!ok) return;
+
     await http(`${api.deleteBase}/${editingId}`, "DELETE");
+
+    showToast({ type: "success", title: "Supprimé", message: "Tâche supprimée 🗑️", ms: 3000 });
+
     closeDrawer();
     await refreshTasks();
     render();
   }
 
   // =========================
-  // RENDER helpers
+  // RENDER
   // =========================
   function clearZones() {
     Object.values(zones).forEach((z) => z && (z.innerHTML = ""));
@@ -462,7 +484,10 @@ console.log("TASK UI JS LOADED ✅");
       e.stopPropagation();
       const ok = confirm(`Supprimer la tâche : "${task.title}" ?`);
       if (!ok) return;
+
       await http(`${api.deleteBase}/${task.id}`, "DELETE");
+      showToast({ type: "success", title: "Supprimé", message: "Tâche supprimée 🗑️", ms: 3000 });
+
       await refreshTasks();
       render();
     });
@@ -546,7 +571,7 @@ console.log("TASK UI JS LOADED ✅");
   }
 
   // =========================
-  // DRAG & DROP (PATCH status only)
+  // DRAG & DROP
   // =========================
   function initDragDrop() {
     Object.entries(zones).forEach(([status, zone]) => {
@@ -566,7 +591,7 @@ console.log("TASK UI JS LOADED ✅");
   }
 
   // =========================
-  // CATEGORY DRAWER (top button)
+  // CATEGORY DRAWER
   // =========================
   function openCatDrawer() {
     catOverlay?.classList.add("open");
@@ -596,14 +621,8 @@ console.log("TASK UI JS LOADED ✅");
   }
 
   async function createCategory() {
-    const name = (cat_name?.value || "").trim();
-    if (!name) {
-      alert("Nom catégorie obligatoire");
-      return;
-    }
-
     const payload = {
-      name,
+      name: (cat_name?.value || "").trim(),
       description: (cat_description?.value || "").trim() || null,
       color: cat_color?.value || null,
       icon: (cat_icon?.value || "").trim() || null,
@@ -630,8 +649,9 @@ console.log("TASK UI JS LOADED ✅");
     categories.unshift(newCat);
 
     await loadCategories(String(newCat.id));
-
     closeCatDrawerFn();
+
+    showToast({ type: "success", title: "Succès", message: "Catégorie créée ✅", ms: 3000 });
     render();
   }
 
@@ -648,17 +668,12 @@ console.log("TASK UI JS LOADED ✅");
     editBtn?.addEventListener("click", saveOrUpdate);
     deleteBtn?.addEventListener("click", deleteCurrent);
 
-    // Filters
     searchInput?.addEventListener("input", render);
     prioFilter?.addEventListener("change", render);
     statusFilter?.addEventListener("change", render);
 
-    // ✅ Voice bind
     const voice = initVoiceSearch();
-    voiceBtn?.addEventListener("click", () => {
-      if (!voice) return;
-      voice.toggle();
-    });
+    voiceBtn?.addEventListener("click", () => voice?.toggle());
 
     clearBtn?.addEventListener("click", () => {
       if (searchInput) searchInput.value = "";
@@ -667,13 +682,11 @@ console.log("TASK UI JS LOADED ✅");
       render();
     });
 
-    // ESC close
     window.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && drawer?.classList.contains("open")) closeDrawer();
       if (e.key === "Escape" && catDrawer?.classList.contains("open")) closeCatDrawerFn();
     });
 
-    // category drawer
     newCatBtn?.addEventListener("click", openCatDrawer);
     catOverlay?.addEventListener("click", closeCatDrawerFn);
     closeCatDrawer?.addEventListener("click", closeCatDrawerFn);

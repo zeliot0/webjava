@@ -1,0 +1,47 @@
+{% extends 'layout/base.html.twig' %}
+{% block page_title %}Features{% endblock %}
+{% block page_desc %}Gestion des fonctionnalités{% endblock %}
+{% block page_action %}
+<a href="{{ path('app_feature_new') }}" class="btn primary">
+    + Ajouter Feature
+</a>
+{% endblock %}
+
+{% block title %}Features{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+<h1 class="page-title">Features</h1>
+    <a href="{{ path('app_feature_new') }}" class="btn primary">+ Ajouter Feature</a>
+</div>
+
+<div class="cards-grid">
+{% for feature in features %}
+    <div class="package-card">
+
+        <h2>{{ feature.nom }}</h2>
+        <p class="desc">{{ feature.description }}</p>
+
+        <div class="price">
+            {{ feature.limite }}
+            <span>limite</span>
+        </div>
+
+        <ul class="infos">
+            <li>Type : {{ feature.type }}</li>
+            <li>Statut : {{ feature.statut ? 'Actif' : 'Inactif' }}</li>
+        </ul>
+
+        <div class="actions">
+            <a href="{{ path('app_feature_edit', {'id': feature.id}) }}" class="btn edit">Modifier</a>
+            <a href="{{ path('app_feature_show', {'id': feature.id}) }}" class="btn delete">Supprimer</a>
+        </div>
+
+    </div>
+{% else %}
+    <p>Aucune feature</p>
+{% endfor %}
+</div>
+
+{% endblock %}

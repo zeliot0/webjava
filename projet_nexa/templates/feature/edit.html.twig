@@ -1,0 +1,25 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Modifier Feature{% endblock %}
+
+{% block body %}
+
+<div class="form-container">
+    <h1 class="page-title">Modifier Feature</h1>
+
+    {{ include('feature/_form.html.twig', {
+        button_label: 'Mettre à jour'
+    }) }}
+
+    <div class="form-actions">
+        <a href="{{ path('app_feature_index') }}" class="btn secondary">
+            Retour
+        </a>
+    </div>
+</div>
+
+<div class="delete-box">
+    {{ include('feature/_delete_form.html.twig') }}
+</div>
+
+{% endblock %}

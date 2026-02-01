@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Feature{% endblock %}
+
+{% block body %}
+
+<div class="show-wrapper">
+
+        <h1 class="page-title"> Feature</h1>
+
+
+    <div class="show-card">
+
+        <div class="show-row">
+            <span>Code</span>
+            <strong>{{ feature.code }}</strong>
+        </div>
+
+        <div class="show-row">
+            <span>Nom</span>
+            <strong>{{ feature.nom }}</strong>
+        </div>
+
+        <div class="show-row">
+            <span>Description</span>
+            <strong>{{ feature.description }}</strong>
+        </div>
+
+        <div class="show-row">
+            <span>Limite</span>
+            <strong>{{ feature.limite }}</strong>
+        </div>
+
+        <div class="show-row">
+            <span>Type</span>
+            <strong>{{ feature.type }}</strong>
+        </div>
+
+        <div class="show-row">
+            <span>Statut</span>
+            <strong class="{{ feature.statut ? 'ok' : 'no' }}">
+                {{ feature.statut ? 'Actif' : 'Inactif' }}
+            </strong>
+        </div>
+
+        <div class="show-row">
+            <span>Date création</span>
+            <strong>{{ feature.dateCreation|date('Y-m-d H:i') }}</strong>
+        </div>
+
+    </div>
+
+    <div class="delete-zone">
+        {{ include('feature/_delete_form.html.twig') }}
+    </div>
+
+</div>
+
+{% endblock %}

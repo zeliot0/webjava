@@ -1,0 +1,29 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Supprimer Feature{% endblock %}
+
+{% block body %}
+
+<div class="delete-page">
+    <h1 class="page-title">Supprimer Feature</h1>
+
+    <form method="post"
+          action="{{ path('app_feature_delete', {'id': feature.id}) }}"
+          onsubmit="return confirm('Supprimer cette feature ?');">
+
+        <input type="hidden" name="_token"
+               value="{{ csrf_token('delete' ~ feature.id) }}">
+
+        <div class="delete-actions">
+            <a href="{{ path('app_feature_index') }}" class="btn secondary">
+                Annuler
+            </a>
+
+            <button class="btn danger">
+                Supprimer
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

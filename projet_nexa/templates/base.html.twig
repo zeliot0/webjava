@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}NEXA{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/styleee.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+        <h2 class="logo">NEXA</h2>
+
+        <nav>
+            <a href="{{ path('app_package_index') }}">Packages</a>
+            <a href="{{ path('app_feature_index') }}">Features</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-btn">🌙 / ☀️</button>
+    </aside>
+
+    <main class="content">
+        {% block body %}{% endblock %}
+    </main>
+
+</div>
+
+<script>
+const btn = document.getElementById('themeToggle');
+btn.onclick = () => {
+    const html = document.documentElement;
+    html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+};
+</script>
+
+</body>
+</html>

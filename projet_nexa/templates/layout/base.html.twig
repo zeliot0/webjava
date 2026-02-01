@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NEXA{% endblock %}</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900;950&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/styleee.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    {% include 'layout/sidebar.html.twig' %}
+
+    <main class="content">
+
+        <!-- TOP BAR -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <div class="topbar-logo">⚡</div>
+                 
+                <div class="topbar-text">
+                    <div class="topbar-title">NEXA</div>
+                    <div class="topbar-sub">Gestion pro · Drag & Drop · Données persistantes</div>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <span class="topbar-dot"></span>
+                <span>Online</span>
+            </div>
+        </div>
+        <!-- END TOP BAR -->
+
+        {% block body %}{% endblock %}
+    </main>
+
+</div>
+
+<script>
+const themeBtn = document.getElementById('themeToggle');
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    const html = document.documentElement;
+    html.dataset.theme = (html.dataset.theme === 'dark') ? 'light' : 'dark';
+  });
+}
+</script>
+
+</body>
+</html>

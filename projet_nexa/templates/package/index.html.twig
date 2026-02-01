@@ -1,0 +1,52 @@
+{% extends 'layout/base.html.twig' %}
+{% block page_title %}Packages{% endblock %}
+{% block page_desc %}Gestion des abonnements{% endblock %}
+{% block page_action %}
+<a href="{{ path('app_package_new') }}" class="btn primary">
+    + Ajouter Package
+</a>
+{% endblock %}
+
+{% block title %}Packages{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+    <h1 class="page-title">Packages</h1>
+
+    <a href="{{ path('app_package_new') }}" class="btn primary">+ Ajouter Package</a>
+</div>
+
+<div class="cards-grid">
+{% for package in packages %}
+    <div class="package-card">
+
+        <h2>{{ package.nom }}</h2>
+        <p class="desc">{{ package.description }}</p>
+
+        <div class="price">
+            {{ package.prix }} {{ package.devise }}
+            <span>/ {{ package.duree == 0 ? 'Illimité' : package.duree ~ ' ' ~ package.uniteDuree }}</span>
+        </div>
+
+        {% if package.essaiGratuit %}
+            <span class="badge success">Essai gratuit</span>
+        {% endif %}
+
+        <ul class="infos">
+            <li>Type : {{ package.type }}</li>
+            <li>Statut : {{ package.statut ? 'Actif' : 'Inactif' }}</li>
+        </ul>
+
+        <div class="actions">
+            <a href="{{ path('app_package_edit', {'id': package.id}) }}" class="btn edit">Modifier</a>
+            <a href="{{ path('app_package_show', {'id': package.id}) }}" class="btn delete">Supprimer</a>
+        </div>
+
+    </div>
+{% else %}
+    <p>Aucun package trouvé</p>
+{% endfor %}
+</div>
+
+{% endblock %}

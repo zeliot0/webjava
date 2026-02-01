@@ -1,0 +1,13 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Ajouter Feature{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1 class="page-title">Ajouter Feature</h1>
+
+    {{ include('feature/_form.html.twig', {
+        button_label: 'Enregistrer'
+    }) }}
+</div>
+{% endblock %}

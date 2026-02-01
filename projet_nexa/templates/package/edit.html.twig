@@ -1,0 +1,13 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block title %}Modifier Package{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1 class="page-title">Modifier Package</h1>
+
+    {{ include('package/_form.html.twig', {
+        button_label: 'Mettre à jour'
+    }) }}
+</div>
+{% endblock %}

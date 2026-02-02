@@ -1,0 +1,50 @@
+{% extends 'layout/baseu.html.twig' %}
+
+{% block title %}Packages{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Packages</h1>
+    <p class="desc">Liste des packages disponibles</p>
+  </div>
+</div>
+
+{% if packages is empty %}
+  <div class="show-card" style="text-align:center">
+    <p>Aucun package trouvé.</p>
+  </div>
+{% else %}
+
+<div class="cards-grid">
+
+  {% for package in packages %}
+    <div class="package-card">
+
+      {% if package.essaiGratuit %}
+        <span class="badge">Essai gratuit</span>
+      {% endif %}
+
+      <h3>{{ package.nom }}</h3>
+      <p class="desc">{{ package.description }}</p>
+
+      <div class="price">
+        {{ package.prix }} {{ package.devise }}
+        <span>
+          / {{ package.duree == 0 ? '∞' : package.duree ~ ' ' ~ package.uniteDuree }}
+        </span>
+      </div>
+
+      <ul class="infos">
+        <li>Type : {{ package.type }}</li>
+        <li>Statut : {{ package.statut ? 'Actif' : 'Inactif' }}</li>
+      </ul>
+
+    </div>
+  {% endfor %}
+
+</div>
+{% endif %}
+
+{% endblock %}

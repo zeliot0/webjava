@@ -1,0 +1,48 @@
+{% extends 'layout/baseu.html.twig' %}
+
+{% block title %}Features{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Features</h1>
+    <p class="desc">Liste des features disponibles</p>
+  </div>
+</div>
+
+{% if features is empty %}
+  <div class="show-card" style="text-align:center">
+    <p>Aucune feature trouvée.</p>
+  </div>
+{% else %}
+
+<div class="cards-grid">
+
+  {% for feature in features %}
+    <div class="package-card">
+
+      <h3>{{ feature.nom }}</h3>
+
+      <p class="desc">
+        {{ feature.description }}
+      </p>
+
+      <div class="price">
+        {{ feature.limite }}
+        <span>limite</span>
+      </div>
+
+      <ul class="infos">
+        <li>Type : {{ feature.type }}</li>
+        <li>Statut : {{ feature.statut ? 'Actif' : 'Inactif' }}</li>
+      </ul>
+
+    </div>
+  {% endfor %}
+
+</div>
+
+{% endif %}
+
+{% endblock %}

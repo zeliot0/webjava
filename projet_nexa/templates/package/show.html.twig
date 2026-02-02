@@ -1,69 +1,69 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout/base.html.twig' %}
+
 {% block title %}Package{% endblock %}
 
 {% block body %}
 
 <div class="show-wrapper">
 
-            <h1 class="page-title"> Package</h1>
+  <h1 class="page-title">Détails du Package</h1>
 
+  <div class="show-card">
 
-    <div class="show-card">
-
-        <div class="show-row">
-            <span>Code</span>
-            <strong>{{ package.code }}</strong>
-        </div>
-
-        <div class="show-row">
-            <span>Nom</span>
-            <strong>{{ package.nom }}</strong>
-        </div>
-
-        <div class="show-row">
-            <span>Description</span>
-            <strong>{{ package.description }}</strong>
-        </div>
-
-        <div class="show-row">
-            <span>Prix</span>
-            <strong>{{ package.prix }} {{ package.devise }}</strong>
-        </div>
-
-        <div class="show-row">
-            <span>Durée</span>
-            <strong>
-                {{ package.duree == 0 ? 'Illimitée' : package.duree ~ ' ' ~ package.uniteDuree }}
-            </strong>
-        </div>
-
-        <div class="show-row">
-            <span>Type</span>
-            <strong>{{ package.type }}</strong>
-        </div>
-
-        <div class="show-row">
-            <span>Essai gratuit</span>
-            <strong>{{ package.essaiGratuit ? 'Oui' : 'Non' }}</strong>
-        </div>
-
-        <div class="show-row">
-            <span>Statut</span>
-            <strong class="{{ package.statut ? 'ok' : 'no' }}">
-                {{ package.statut ? 'Actif' : 'Inactif' }}
-            </strong>
-        </div>
-
-        <div class="show-row">
-            <span>Date création</span>
-            <strong>{{ package.dateCreation|date('Y-m-d H:i') }}</strong>
-        </div>
-
+    <div class="show-row">
+      <span>Code</span>
+      <strong>{{ package.code }}</strong>
     </div>
 
-    <div class="delete-zone">
-        {{ include('package/_delete_form.html.twig') }}
+    <div class="show-row">
+      <span>Nom</span>
+      <strong>{{ package.nom }}</strong>
     </div>
+
+    <div class="show-row">
+      <span>Description</span>
+      <strong>{{ package.description }}</strong>
+    </div>
+
+    <div class="show-row">
+      <span>Prix</span>
+      <strong>{{ package.prix }} {{ package.devise }}</strong>
+    </div>
+
+    <div class="show-row">
+      <span>Durée</span>
+      <strong>
+        {{ package.duree == 0 ? 'Illimitée' : package.duree ~ ' ' ~ package.uniteDuree }}
+      </strong>
+    </div>
+
+    <div class="show-row">
+      <span>Type</span>
+      <strong>{{ package.type }}</strong>
+    </div>
+
+    <div class="show-row">
+      <span>Essai gratuit</span>
+      <strong>{{ package.essaiGratuit ? 'Oui' : 'Non' }}</strong>
+    </div>
+
+    <div class="show-row">
+      <span>Statut</span>
+      <strong class="{{ package.statut ? 'ok' : 'no' }}">
+        {{ package.statut ? 'Actif' : 'Inactif' }}
+      </strong>
+    </div>
+
+    <div class="show-row">
+      <span>Date création</span>
+      <strong>{{ package.dateCreation|date('Y-m-d H:i') }}</strong>
+    </div>
+
+  </div>
+
+  <div class="delete-zone">
+    {{ include('package/_delete_form.html.twig') }}
+  </div>
 
 </div>
 

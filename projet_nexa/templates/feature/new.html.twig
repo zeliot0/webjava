@@ -3,11 +3,22 @@
 {% block title %}Ajouter Feature{% endblock %}
 
 {% block body %}
+ <!-- ACTIONS -->
+    <div class="form-actions" style="margin-top:18px">
+        <a href="{{ path('app_feature_index') }}" class="btn">
+            ← Retour
+        </a>
+    </div>
 <div class="form-container">
+
     <h1 class="page-title">Ajouter Feature</h1>
 
     {{ include('feature/_form.html.twig', {
         button_label: 'Enregistrer'
     }) }}
+
+   
+
 </div>
+
 {% endblock %}

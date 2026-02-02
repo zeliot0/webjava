@@ -1,0 +1,282 @@
+PS C:\Users\DELL\Desktop\nexa\projet_nexa> php bin/console make:entity Package
+ created: src/Entity/Package.php
+ created: src/Repository/PackageRepository.php
+ 
+ Entity generated! Now let's add some fields!
+ You can always add more fields later manually or by re-running this command.
+
+ New property name (press <return> to stop adding fields):
+ > 
+
+ 
+  Success! 
+ 
+
+ Next: When you're ready, create a migration with php bin/console_____nexa> php bin/console make:entity Package
+ Your entity already exists! So let's add some new fields!
+
+ New property name (press <return> to stop adding fields):
+ > code
+
+ Field type (enter ? to see all types) [string]:
+ >
+
+ Field length [255]:
+ >
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ >   
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > nom
+
+ Field type (enter ? to see all types) [string]:
+ >
+
+ Field length [255]:
+ >
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ >
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > description
+
+ Field type (enter ? to see all types) [string]:
+ > text
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ > yes
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > prix
+
+ Field type (enter ? to see all types) [string]:
+ > float
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ >
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > devise
+
+ Field type (enter ? to see all types) [string]:
+ >
+
+ Field length [255]:
+ >
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ >
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > duree
+
+ Field type (enter ? to see all types) [string]:
+ > integer
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ > yes
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > uniteDuree
+
+ Field type (enter ? to see all types) [string]:
+ >
+
+ Field length [255]:
+ >
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ > yes
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > > type
+
+
+                                                                     
+                                                                     
+ [ERROR] "> type" is not a valid PHP property name.                  
+                                                                     
+                                                                     
+                                                                     
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > > type
+
+
+                                                                     
+                                                                     
+ [ERROR] "> type" is not a valid PHP property name.                  
+                                                                     
+                                                                     
+                                                                     
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > type
+
+ Field type (enter ? to see all types) [string]:
+ >
+
+ Field length [255]:
+ >
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ > yes
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > > essaiGratuit
+
+
+                                                                     
+                                                                     
+ [ERROR] "> essaiGratuit" is not a valid PHP property name.          
+                                                                     
+                                                                     
+                                                                     
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > essaiGratuit
+
+ Field type (enter ? to see all types) [string]:
+ > boolean
+
+ Can this field be null in the database (nullable) (yes/no) [no]:    
+ >
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > statut
+
+ Field type (enter ? to see all types) [string]:
+ > boolean
+ >
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > dateCreation
+
+ Field type (enter ? to see all types) [string]:
+ >
+
+ updated: src/Entity/Package.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ >
+
+
+ 
+  Success! 
+ 
+
+ Next: When you're ready, create a migration with php bin/console make:migration
+
+PS C:\Users\DELL\Desktop\nexa\projet_nexa> php bin/console make:migration
+ created: migrations/Version20260129233221.php
+
+ 
+  Success! 
+ 
+
+ Review the new migration then run it with php bin/console doctrine:migrations:migrate
+ See https://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html
+PS C:\Users\DELL\Desktop\nexa\projet_nexa>
+PS C:\Users\DELL\Desktop\nexa\projet_nexa> php bin/console doctrine:migrations:migrate
+
+ WARNING! You are about to execute a migration in database "nexa" that could result in schema changes and data loss. Are you sure you wish to continue? (yes/no) [yes]:
+ >
+
+[notice] Migrating up to DoctrineMigrations\Version20260129233221
+[notice] finished in 7253.2ms, used 24M memory, 1 migrations executed, 2 sql queries
+
+ [OK] Successfully migrated to version: DoctrineMigrations\Version20260129233221
+
+
+
+PS C:\Users\DELL\Desktop\nexa\projet_nexa>
+PS C:\Users\DELL\Desktop\nexa\projet_nexa>
+PS C:\Users\DELL\Desktop\nexa\projet_nexa> php bin/console make:crud Package
+
+ Choose a name for your controller class (e.g. PackageController) [PackageController]:
+ > 
+
+PS C:\Users\DELL\Desktop\nexa\projet_nexa>
+PS C:\Users\DELL\Desktop\nexa\projet_nexa> php bin/console make:crud Package
+
+ Choose a name for your controller class (e.g. PackageController) [PackageController]:
+ >
+
+PS C:\Users\DELL\Desktop\nexa\projet_nexa> php bin/console make:crud Package
+
+ Choose a name for your controller class (e.g. PackageController) [PackageController]:
+ >
+
+
+ Choose a name for your controller class (e.g. PackageController) [PackageController]:
+ >
+
+ Choose a name for your controller class (e.g. PackageController) [PackageController]:
+ >
+
+ >
+
+
+ Do you want to generate PHPUnit tests? [Experimental] (yes/no) [no]:
+ Do you want to generate PHPUnit tests? [Experimental] (yes/no) [no]:
+ >
+
+ created: src/Controller/PackageController.php
+ created: src/Form/PackageType.php
+ created: templates/package/_delete_form.html.twig
+ created: templates/package/_form.html.twig
+ created: templates/package/edit.html.twig
+ created: templates/package/index.html.twig
+ created: templates/package/new.html.twig
+ created: templates/package/show.html.twig
+
+ 
+  Success! 
+ >
+
+ created: src/Controller/PackageController.php
+ created: src/Form/PackageType.php
+ created: templates/package/_delete_form.html.twig
+ created: templates/package/_form.html.twig
+ created: templates/package/edit.html.twig
+ created: templates/package/index.html.twig
+ created: templates/package/new.html.twig
+ created: templates/package/show.html.twig
+
+ 
+  Success! 
+ created: templates/package/new.html.twig
+ created: templates/package/show.html.twig
+
+ 
+  Success! 
+ created: templates/package/show.html.twig
+
+ 
+  Success! 
+ 
+
+ Next: Check your new CRUD by going to /package/
+PS C:\Users\DELL\Desktop\nexa\projet_nexa>

@@ -3,11 +3,25 @@
 {% block title %}Modifier Package{% endblock %}
 
 {% block body %}
-<div class="form-container">
-    <h1 class="page-title">Modifier Package</h1>
 
-    {{ include('package/_form.html.twig', {
-        button_label: 'Mettre à jour'
-    }) }}
+<div class="form-container">
+
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Modifier Package</h1>
+      <p class="desc">Mettre à jour les informations du package</p>
+    </div>
+
+    <a href="{{ path('app_package_index') }}" class="btn">
+      <i class="fa-solid fa-arrow-left"></i>
+      Retour
+    </a>
+  </div>
+
+  {{ include('package/_form.html.twig', {
+      button_label: 'Mettre à jour'
+  }) }}
+
 </div>
+
 {% endblock %}

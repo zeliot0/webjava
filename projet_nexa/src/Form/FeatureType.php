@@ -17,11 +17,6 @@ class FeatureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-
-            ->add('code', TextType::class, [
-                'label' => 'Code',
-            ])
-
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
             ])
@@ -42,17 +37,12 @@ class FeatureType extends AbstractType
                     'PRO' => 'PRO',
                     'BUSINESS' => 'BUSINESS',
                 ],
-                'attr' => [
-                    'class' => 'nexa-select'
-                ],
             ])
 
             ->add('statut', CheckboxType::class, [
                 'label' => 'Statut actif',
                 'required' => false,
-            ])
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -7,49 +7,37 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: FeatureRepository::class)]
+#[ORM\Table(name: 'feature')]
 class Feature
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'id_feature')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $code = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: 'nom_feature', length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(name: 'description_feature', type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column(name: 'type_feature', length: 255, nullable: true)]
+    private ?string $type = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $limite = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $type = null;
-
     #[ORM\Column]
     private ?bool $statut = null;
 
-    #[ORM\Column]
-    private ?\DateTime $dateCreation = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateCreation = null;
+
+    /* ================= GETTERS & SETTERS ================= */
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): static
-    {
-        $this->code = $code;
-
-        return $this;
     }
 
     public function getNom(): ?string
@@ -57,10 +45,9 @@ class Feature
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -69,22 +56,9 @@ class Feature
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getLimite(): ?int
-    {
-        return $this->limite;
-    }
-
-    public function setLimite(?int $limite): static
-    {
-        $this->limite = $limite;
-
         return $this;
     }
 
@@ -93,10 +67,20 @@ class Feature
         return $this->type;
     }
 
-    public function setType(?string $type): static
+    public function setType(?string $type): self
     {
         $this->type = $type;
+        return $this;
+    }
 
+    public function getLimite(): ?int
+    {
+        return $this->limite;
+    }
+
+    public function setLimite(?int $limite): self
+    {
+        $this->limite = $limite;
         return $this;
     }
 
@@ -105,22 +89,20 @@ class Feature
         return $this->statut;
     }
 
-    public function setStatut(bool $statut): static
+    public function setStatut(bool $statut): self
     {
         $this->statut = $statut;
-
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTime
+    public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTime $dateCreation): static
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
-
         return $this;
     }
 }

@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produits — NEXA{% endblock %}
+
+{% block body %}
+
+{% set currentSort = app.request.get('sort') %}
+{% set currentDir = (app.request.get('dir') ?: 'DESC')|upper %}
+{% set queryParams = app.request.query.all %}
+
+<!-- ================= PAGE HEADER ================= -->
+<div class="page-header">
+    <div>
+        <h1>Produits</h1>
+        <p>Gestion du stock et des informations produits</p>
+    </div>
+
+    <div style="display:flex; gap:12px; align-items:center">
+        <a href="{{ path('app_produit_stats') }}" class="btn">
+            Stats
+        </a>
+        <a href="{{ path('app_produit_pdf', queryParams) }}" class="btn">
+            PDF
+        </a>
+        <div style="display:flex; flex-direction:column; gap:10px">
+            <a href="{{ path('app_produit_new') }}" class="btn primary">
+                + Ajouter un produit
+            </a>
+            <a href="{{ path('app_mouvement_index') }}" class="btn">
+                <i class="fa-solid fa-right-left"></i>
+                Mouvements
+            </a>
+        </div>
+    </div>
+</div>
+
+<form method="get" class="search-bar">
+    <div class="search-input">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" name="q" placeholder="Rechercher un produit..." value="{{ q }}">
+    </div>
+    <div class="search-select">
+        <i class="fa-solid fa-arrow-up-a-z"></i>
+        <select name="sort">
+            <option value="" {{ currentSort is empty ? 'selected' : '' }}>Tri: Date</option>
+            <option value="nom" {{ currentSort == 'nom' ? 'selected' : '' }}>Nom</option>
+            <option value="categorie" {{ currentSort == 'categorie' ? 'selected' : '' }}>Catégorie</option>
+            <option value="stock" {{ currentSort == 'stock' ? 'selected' : '' }}>Stock</option>
+            <option value="date" {{ currentSort == 'date' ? 'selected' : '' }}>Ajout</option>
+        </select>
+    </div>
+    <div class="search-select">
+        <i class="fa-solid fa-sort"></i>
+        <select name="dir">
+            <option value="DESC" {{ currentDir == 'DESC' ? 'selected' : '' }}>DESC</option>
+            <option value="ASC" {{ currentDir == 'ASC' ? 'selected' : '' }}>ASC</option>
+        </select>
+    </div>
+    <button class="btn primary" type="submit">Rechercher</button>
+    {% if q or currentSort %}
+        <a class="btn" href="{{ path('app_produit_index') }}">
+            <i class="fa-solid fa-rotate-left"></i>
+            Reset
+        </a>
+    {% endif %}
+</form>
+
+<div class="pack-grid">
+    {% for produit in produits %}
+        {% set lowStock = produit.quantiteStock is not null and produit.quantiteStock < 5 %}
+
+        <article class="pack-card {{ lowStock ? 'low-stock' : '' }}">
+            <div class="pack-head">
+                <a class="item-media" href="{{ path('app_produit_show', {'id_p': produit.idP}) }}">
+                    <div class="thumb">
+                        {% if produit.photoP %}
+                            <img src="{{ asset('uploads/produits/' ~ produit.photoP) }}" alt="{{ produit.nomP }}">
+                        {% else %}
+                            <span class="thumb-placeholder">{{ produit.nomP|slice(0, 1)|upper }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="item-text">
+                        <div class="item-title">{{ produit.nomP }}</div>
+                        <div class="item-sub">#{{ produit.idP }}</div>
+                    </div>
+                </a>
+
+                <div class="pack-pills">
+                    <div class="pack-pill">{{ produit.categorieP ?: '—' }}</div>
+                    {% if lowStock %}
+                        <div class="pack-pill danger">Stock faible</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="pack-metric">
+                {{ produit.quantiteStock }}
+                <small>Stock • {{ produit.uniteP }}</small>
+            </div>
+
+            <ul class="pack-list">
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Emplacement :</strong> {{ produit.emplacement ?: '—' }}</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Ajout :</strong> {{ produit.dateAjout ? produit.dateAjout|date('d/m/Y') : '—' }}</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Expiration :</strong> {{ produit.dateExpiration ? produit.dateExpiration|date('d/m/Y') : '—' }}</span>
+                </li>
+            </ul>
+
+            <div class="pack-actions">
+                <form method="post"
+                      action="{{ path('app_produit_delete', {'id_p': produit.idP}) }}"
+                      onsubmit="return confirm('Supprimer ce produit ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ produit.idP) }}">
+                    <button class="btn danger" type="submit">
+                        <i class="fa-regular fa-trash-can"></i>
+                        Supprimer
+                    </button>
+                </form>
+                <a href="{{ path('app_produit_edit', {'id_p': produit.idP}) }}" class="btn primary">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                    Modifier
+                </a>
+            </div>
+        </article>
+    {% else %}
+        <div class="warning">Aucun produit enregistré</div>
+    {% endfor %}
+</div>
+
+{% endblock %}

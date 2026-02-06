@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Mouvements</title>
+    <style>
+        @page { margin: 18px; }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #111; }
+        h1 { margin: 0; font-size: 18px; }
+        .meta { margin-top: 4px; color: #555; font-size: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 6px 8px; vertical-align: top; }
+        th { background: #f3f3f3; text-align: left; }
+        .num { text-align: right; }
+    </style>
+</head>
+<body>
+<h1>Historique des mouvements</h1>
+<div class="meta">
+    Généré le {{ generatedAt ? generatedAt|date('d/m/Y H:i') : "now"|date('d/m/Y H:i') }}
+    {% if produit %} — Produit : “{{ produit.nomP }}”{% endif %}
+    {% if q %} — Recherche : “{{ q }}”{% endif %}
+    {% if sort %} — Tri : {{ sort }} {{ dir|upper }}{% endif %}
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Type</th>
+        <th>Produit</th>
+        <th class="num">Quantité</th>
+        <th>Date</th>
+        <th>Motif</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for mouvement in mouvements %}
+        <tr>
+            <td class="num">{{ mouvement.idMo }}</td>
+            <td>{{ mouvement.typeM }}</td>
+            <td>{{ mouvement.produit ? mouvement.produit.nomP : '—' }}</td>
+            <td class="num">{{ mouvement.quantite }}</td>
+            <td>{{ mouvement.dateMouvement ? mouvement.dateMouvement|date('d/m/Y') : '-' }}</td>
+            <td>{{ mouvement.motif }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6" style="text-align:center; padding:18px; color:#777">
+                Aucun mouvement
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

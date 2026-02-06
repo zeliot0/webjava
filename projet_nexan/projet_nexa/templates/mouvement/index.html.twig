@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mouvements — NEXA{% endblock %}
+
+{% block body %}
+
+{% set currentSort = app.request.get('sort') %}
+{% set currentDir = (app.request.get('dir') ?: 'DESC')|upper %}
+{% set queryParams = app.request.query.all %}
+
+<div class="page-header">
+    <div>
+        <h1>Historique des mouvements</h1>
+        <p>
+            Entrées et sorties de stock
+            {% if produitFilter %}
+                • Produit : <strong>{{ produitFilter.nomP }}</strong>
+            {% endif %}
+        </p>
+    </div>
+
+    <div style="display:flex; gap:12px; align-items:center">
+        {% if produitFilter %}
+            <a href="{{ path('app_mouvement_index') }}" class="btn">
+                Tous les mouvements
+            </a>
+        {% endif %}
+        <a href="{{ path('app_mouvement_stats') }}" class="btn">
+            Stats
+        </a>
+        <a href="{{ path('app_mouvement_pdf', queryParams) }}" class="btn">
+            PDF
+        </a>
+        <div style="display:flex; flex-direction:column; gap:10px">
+            <a href="{{ produitFilter ? path('app_mouvement_new', {'id_p': produitFilter.idP}) : path('app_mouvement_new') }}" class="btn primary">
+                + Nouveau mouvement
+            </a>
+            <a href="{{ path('app_produit_index') }}" class="btn">
+                <i class="fa-solid fa-box"></i>
+                Produits
+            </a>
+        </div>
+    </div>
+</div>
+
+<form method="get" class="search-bar">
+    {% if produitFilter %}
+        <input type="hidden" name="id_p" value="{{ produitFilter.idP }}">
+    {% endif %}
+    <div class="search-input">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" name="q" placeholder="Rechercher un mouvement (type, motif, produit)..." value="{{ q }}">
+    </div>
+    <div class="search-select">
+        <i class="fa-solid fa-arrow-up-a-z"></i>
+        <select name="sort">
+            <option value="" {{ currentSort is empty ? 'selected' : '' }}>Tri: Date</option>
+            <option value="nom" {{ currentSort == 'nom' ? 'selected' : '' }}>Nom produit</option>
+            <option value="type" {{ currentSort == 'type' ? 'selected' : '' }}>Type</option>
+            <option value="quantite" {{ currentSort == 'quantite' ? 'selected' : '' }}>Quantité</option>
+            <option value="date" {{ currentSort == 'date' ? 'selected' : '' }}>Date</option>
+        </select>
+    </div>
+    <div class="search-select">
+        <i class="fa-solid fa-sort"></i>
+        <select name="dir">
+            <option value="DESC" {{ currentDir == 'DESC' ? 'selected' : '' }}>DESC</option>
+            <option value="ASC" {{ currentDir == 'ASC' ? 'selected' : '' }}>ASC</option>
+        </select>
+    </div>
+    <button class="btn primary" type="submit">Rechercher</button>
+    {% if q or currentSort %}
+        {% if produitFilter %}
+            <a class="btn" href="{{ path('app_mouvement_index', {'id_p': produitFilter.idP}) }}">
+                <i class="fa-solid fa-rotate-left"></i>
+                Reset
+            </a>
+        {% else %}
+            <a class="btn" href="{{ path('app_mouvement_index') }}">
+                <i class="fa-solid fa-rotate-left"></i>
+                Reset
+            </a>
+        {% endif %}
+    {% endif %}
+</form>
+
+<div class="pack-grid">
+    {% for mouvement in mouvements %}
+        <article class="pack-card">
+            <div class="pack-head">
+                <a class="item-media" href="{{ path('app_mouvement_show', {'id_mo': mouvement.idMo}) }}">
+                    <div class="thumb">
+                        {% if mouvement.produit and mouvement.produit.photoP %}
+                            <img src="{{ asset('uploads/produits/' ~ mouvement.produit.photoP) }}" alt="{{ mouvement.produit.nomP }}">
+                        {% elseif mouvement.produit %}
+                            <span class="thumb-placeholder">{{ mouvement.produit.nomP|slice(0, 1)|upper }}</span>
+                        {% else %}
+                            <span class="thumb-placeholder">—</span>
+                        {% endif %}
+                    </div>
+                    <div class="item-text">
+                        <div class="item-title">{{ mouvement.produit ? mouvement.produit.nomP : '—' }}</div>
+                        <div class="item-sub">#{{ mouvement.idMo }}</div>
+                    </div>
+                </a>
+
+                <div class="pack-pill {{ mouvement.typeM == 'ENTREE' ? 'success' : 'danger' }}">
+                    {{ mouvement.typeM }}
+                </div>
+            </div>
+
+            <div class="pack-metric">
+                {{ mouvement.quantite }}
+                <small>Quantité</small>
+            </div>
+
+            <ul class="pack-list">
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Date :</strong> {{ mouvement.dateMouvement ? mouvement.dateMouvement|date('d/m/Y') : '—' }}</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Motif :</strong> {{ mouvement.motif ?: '—' }}</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Catégorie :</strong> {{ mouvement.produit ? mouvement.produit.categorieP : '—' }}</span>
+                </li>
+            </ul>
+
+            <div class="pack-actions">
+                <form method="post"
+                      action="{{ path('app_mouvement_delete', {'id_mo': mouvement.idMo}) }}"
+                      onsubmit="return confirm('Supprimer ce mouvement ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ mouvement.idMo) }}">
+                    <button class="btn danger" type="submit">
+                        <i class="fa-regular fa-trash-can"></i>
+                        Supprimer
+                    </button>
+                </form>
+                <a href="{{ path('app_mouvement_edit', {'id_mo': mouvement.idMo}) }}" class="btn primary">
+                    <i class="fa-regular fa-pen-to-square"></i>
+                    Modifier
+                </a>
+            </div>
+        </article>
+    {% else %}
+        <div class="warning">Aucun mouvement trouvé</div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Produit — NEXA{% endblock %}
+
+{% block body %}
+
+<!-- ================= HEADER ================= -->
+<div class="page-header">
+    <div>
+        <h1>Créer un nouveau produit</h1>
+        <p>Définissez les informations du produit</p>
+    </div>
+
+    <a href="{{ path('app_produit_index') }}" class="btn">
+        ← Retour à la liste
+    </a>
+</div>
+
+<div class="form-shell">
+    <div class="form-card">
+        {{ include('produit/_form.html.twig', {'button_label': 'Créer le produit'}) }}
+
+    </div>
+</div>
+
+{% endblock %}

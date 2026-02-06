@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques Mouvements — NEXA{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+    <div>
+        <h1>Statistiques mouvements</h1>
+        <p>Répartition par type</p>
+    </div>
+
+    <div style="display:flex; gap:12px">
+        <a href="{{ path('app_mouvement_index') }}" class="btn">
+            ← Retour
+        </a>
+        <a href="{{ path('app_mouvement_pdf') }}" class="btn primary">
+            Export PDF
+        </a>
+    </div>
+</div>
+
+<div class="form-shell">
+    <div class="form-card">
+
+        <div class="form-section">
+            <div class="form-grid-2">
+                <div class="info-box">
+                    <span class="info-label">Total mouvements</span>
+                    <span class="info-value">{{ totalMouvements }}</span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">Quantité totale</span>
+                    <span class="info-value">{{ totalQuantite }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 style="margin-top:0">Histogramme (quantité totale)</h3>
+
+            <div class="histo">
+                {% for row in stats %}
+                    {% set value = row.totalQuantite|default(0) %}
+                    {% set percent = maxTotalQuantite > 0 ? (value / maxTotalQuantite * 100) : 0 %}
+
+                    <div class="histo-row">
+                        <div class="histo-label">{{ row.type ?: '—' }}</div>
+                        <div class="histo-track">
+                            <div class="histo-fill" style="width: {{ percent }}%"></div>
+                        </div>
+                        <div class="histo-value">{{ value }} ({{ row.totalMouvements }})</div>
+                    </div>
+                {% else %}
+                    <div class="warning">Aucune donnée</div>
+                {% endfor %}
+            </div>
+            <div style="margin-top:10px; color: var(--muted); font-weight:800; font-size:.85rem">
+                Valeur = quantité totale, ( ) = nombre de mouvements.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+

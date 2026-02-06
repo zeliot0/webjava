@@ -1,0 +1,91 @@
+{{ form_start(form) }}
+
+<div class="form-errors">
+    {{ form_errors(form) }}
+</div>
+
+<div class="form-section">
+    <h3>Informations générales</h3>
+
+    <div class="form-grid-2">
+        <div>
+            {{ form_label(form.nom_p, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.nom_p, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.nom_p) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.categorie_p, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.categorie_p, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.categorie_p) }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="form-section">
+    <h3>Stock</h3>
+
+    <div class="form-grid-3">
+        <div>
+            {{ form_label(form.quantite_stock, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.quantite_stock, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.quantite_stock) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.unite_p, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.unite_p, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.unite_p) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.emplacement, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.emplacement, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.emplacement) }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="form-section">
+    <h3>Dates</h3>
+
+    <div class="form-grid-2">
+        <div>
+            {{ form_label(form.date_ajout, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.date_ajout, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.date_ajout) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.date_expiration, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.date_expiration, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.date_expiration) }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="form-section">
+
+    <div class="form-grid-2">
+        <div>
+            {{ form_label(form.photo_p, null, {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.photo_p, {'attr': {'class': 'field'}}) }}
+            <div class="field-hint">Formats: JPG / PNG / WEBP / GIF</div>
+            <div class="field-errors">{{ form_errors(form.photo_p) }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="form-actions" style="display:flex;gap:14px;justify-content:flex-end">
+    <button class="btn primary" type="submit">
+        <i class="fa-solid fa-check"></i>
+        {{ button_label|default('Enregistrer') }}
+    </button>
+
+    <a href="{{ path('app_produit_index') }}" class="btn">
+        Annuler
+    </a>
+</div>
+
+{{ form_end(form) }}
+

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques Produits — NEXA{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+    <div>
+        <h1>Statistiques produits</h1>
+        <p>Répartition par catégorie</p>
+    </div>
+
+    <div style="display:flex; gap:12px">
+        <a href="{{ path('app_produit_index') }}" class="btn">
+            ← Retour
+        </a>
+        <a href="{{ path('app_produit_pdf') }}" class="btn primary">
+            Export PDF
+        </a>
+    </div>
+</div>
+
+<div class="form-shell">
+    <div class="form-card">
+
+        <div class="form-section">
+            <div class="form-grid-2">
+                <div class="info-box">
+                    <span class="info-label">Total produits</span>
+                    <span class="info-value">{{ totalProduits }}</span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">Stock total</span>
+                    <span class="info-value">{{ totalStock }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3 style="margin-top:0">Histogramme (stock total)</h3>
+
+            <div class="histo">
+                {% for row in stats %}
+                    {% set value = row.totalStock|default(0) %}
+                    {% set percent = maxTotalStock > 0 ? (value / maxTotalStock * 100) : 0 %}
+
+                    <div class="histo-row">
+                        <div class="histo-label">{{ row.categorie ?: '—' }}</div>
+                        <div class="histo-track">
+                            <div class="histo-fill" style="width: {{ percent }}%"></div>
+                        </div>
+                        <div class="histo-value">{{ value }} ({{ row.totalProduits }})</div>
+                    </div>
+                {% else %}
+                    <div class="warning">Aucune donnée</div>
+                {% endfor %}
+            </div>
+            <div style="margin-top:10px; color: var(--muted); font-weight:800; font-size:.85rem">
+                Valeur = stock total, ( ) = nombre de produits.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

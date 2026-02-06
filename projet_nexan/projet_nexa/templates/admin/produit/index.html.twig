@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin – Produits{% endblock %}
+
+{% block body %}
+<div style="display:flex; gap:12px">
+    <a href="{{ path('admin_mouvement_index') }}" class="btn ghost">
+        <i class="fa-solid fa-right-left"></i>
+        Mouvements
+    </a>
+</div>
+
+{% set currentSort = app.request.get('sort') %}
+{% set currentDir = (app.request.get('dir') ?: 'DESC')|upper %}
+
+<div class="page-header">
+    <div>
+        <h1>Produits</h1>
+        <p>Consultation du stock (Admin )</p>
+    </div>
+
+    
+</div>
+
+<form method="get" class="search-bar">
+    <div class="search-input">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" name="q" placeholder="Rechercher un produit..." value="{{ q }}">
+    </div>
+
+    <div class="search-select">
+        <select name="sort">
+            <option value="">Tri : Date</option>
+            <option value="nom">Nom</option>
+            <option value="categorie">Catégorie</option>
+            <option value="stock">Stock</option>
+        </select>
+    </div>
+
+    <div class="search-select">
+        <select name="dir">
+            <option value="DESC">DESC</option>
+            <option value="ASC">ASC</option>
+        </select>
+    </div>
+
+    <button class="btn primary" type="submit">Rechercher</button>
+</form>
+
+<div class="pack-grid">
+{% for produit in produits %}
+<article class="pack-card">
+
+    <div class="pack-head">
+        <div class="item-media">
+            <div class="thumb">
+                {% if produit.photoP %}
+                    <img src="{{ asset('uploads/produits/' ~ produit.photoP) }}" alt="">
+                {% else %}
+                    <span class="thumb-placeholder">
+                        {{ produit.nomP|slice(0,1)|upper }}
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="item-text">
+                <div class="item-title">{{ produit.nomP }}</div>
+                <div class="item-sub">#{{ produit.idP }}</div>
+            </div>
+        </div>
+
+        {% if produit.quantiteStock < 5 %}
+            <span class="pack-pill danger">Stock faible</span>
+        {% else %}
+            <span class="pack-pill success">Disponible</span>
+        {% endif %}
+    </div>
+
+    <div class="pack-metric">
+        {{ produit.quantiteStock }}
+        <small>Stock • {{ produit.uniteP }}</small>
+    </div>
+
+    <ul class="pack-list">
+        <li>📍 Emplacement : {{ produit.emplacement }}</li>
+        <li>📅 Ajout : {{ produit.dateAjout|date('d/m/Y') }}</li>
+        <li>⏳ Expiration : {{ produit.dateExpiration ? produit.dateExpiration|date('d/m/Y') : '—' }}</li>
+    </ul>
+
+   
+
+</article>
+{% else %}
+    <div class="warning">Aucun produit trouvé</div>
+{% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin – Mouvements{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+    <div>
+        <h1>Historique des mouvements</h1>
+        <p>Entrées et sorties de stock (admin)</p>
+    </div>
+
+    <div style="display:flex; gap:12px">
+        
+        <a href="{{ path('admin_produit_index') }}" class="btn ghost">
+            <i class="fa-solid fa-box"></i>
+            Produits
+        </a>
+    </div>
+</div>
+
+<form method="get" class="search-bar">
+    <div class="search-input">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" name="q" placeholder="Rechercher un mouvement..." value="{{ q }}">
+    </div>
+
+    <button class="btn primary">Rechercher</button>
+</form>
+
+<div class="pack-grid">
+{% for m in mouvements %}
+<article class="pack-card">
+
+    <div class="pack-head">
+        <div class="item-text">
+            <div class="item-title">{{ m.produit.nomP }}</div>
+            <div class="item-sub">#{{ m.idMo }}</div>
+        </div>
+
+        <span class="pack-pill {{ m.typeM == 'SORTIE' ? 'danger' : 'success' }}">
+            {{ m.typeM }}
+        </span>
+    </div>
+
+    <div class="pack-metric">
+        {{ m.quantite }}
+        <small>Quantité</small>
+    </div>
+
+    <ul class="pack-list">
+        <li>📅 Date : {{ m.dateMouvement|date('d/m/Y') }}</li>
+        <li>📝 Motif : {{ m.motif }}</li>
+        <li>📦 Produit : {{ m.produit.nomP }}</li>
+    </ul>
+
+    
+
+</article>
+{% else %}
+    <div class="warning">Aucun mouvement trouvé</div>
+{% endfor %}
+</div>
+
+{% endblock %}

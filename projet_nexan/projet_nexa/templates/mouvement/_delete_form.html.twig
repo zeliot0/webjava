@@ -1,0 +1,13 @@
+<form method="post"
+      action="{{ path('app_mouvement_delete', {'id_mo': mouvement.idMo}) }}"
+      onsubmit="return confirm('Supprimer ce mouvement ?');">
+
+    <input type="hidden"
+           name="_token"
+           value="{{ csrf_token('delete' ~ mouvement.idMo) }}">
+
+    <button class="btn danger" type="submit">
+        <i class="fa-regular fa-trash-can"></i>
+        Supprimer
+    </button>
+</form>

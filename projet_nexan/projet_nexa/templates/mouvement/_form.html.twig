@@ -1,0 +1,60 @@
+{{ form_start(form) }}
+
+<div class="form-errors">
+    {{ form_errors(form) }}
+</div>
+
+<div class="form-section">
+    <h3>Informations mouvement</h3>
+
+    <div class="form-grid-2">
+        <div>
+            {{ form_label(form.type_m, 'Type *', {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.type_m, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.type_m) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.produit, 'Produit *', {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.produit, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.produit) }}</div>
+        </div>
+    </div>
+</div>
+
+<div class="form-section">
+    <h3>Détails</h3>
+
+    <div class="form-grid-2">
+        <div>
+            {{ form_label(form.quantite, 'Quantité *', {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.quantite, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.quantite) }}</div>
+        </div>
+
+        <div>
+            {{ form_label(form.date_mouvement, 'Date *', {'label_attr': {'class': 'field-label'}}) }}
+            {{ form_widget(form.date_mouvement, {'attr': {'class': 'field'}}) }}
+            <div class="field-errors">{{ form_errors(form.date_mouvement) }}</div>
+        </div>
+    </div>
+
+    <div style="margin-top:18px">
+        {{ form_label(form.motif, 'Motif *', {'label_attr': {'class': 'field-label'}}) }}
+        {{ form_widget(form.motif, {'attr': {'class': 'field'}}) }}
+        <div class="field-errors">{{ form_errors(form.motif) }}</div>
+    </div>
+</div>
+
+<div class="form-actions" style="display:flex;gap:14px;justify-content:flex-end">
+    <button class="btn primary">
+        <i class="fa-solid fa-check"></i>
+        {{ button_label|default('Enregistrer') }}
+    </button>
+
+    <a href="{{ path('app_mouvement_index') }}" class="btn">
+        Annuler
+    </a>
+</div>
+
+{{ form_end(form) }}

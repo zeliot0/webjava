@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Produit — {{ produit.nomP }}{% endblock %}
+
+{% block body %}
+
+<!-- ================= HEADER ================= -->
+<div class="page-header">
+    <div>
+        <h1>Détails du produit</h1>
+        <p>Informations complètes du produit sélectionné</p>
+    </div>
+
+    <div style="display:flex; gap:12px">
+        <a href="{{ path('app_produit_index') }}" class="btn">
+            ← Retour
+        </a>
+
+        <a href="{{ path('app_mouvement_new', {'id_p': produit.idP}) }}" class="btn">
+            <i class="fa-solid fa-right-left"></i>
+            Nouveau mouvement
+        </a>
+
+        <a href="{{ path('app_produit_edit', {'id_p': produit.idP}) }}" class="btn primary">
+            Modifier
+        </a>
+    </div>
+</div>
+
+<!-- ================= CONTENT ================= -->
+<div class="form-shell">
+    <div class="form-card">
+
+        <!-- ===== TITRE PRODUIT ===== -->
+        <div style="margin-bottom:24px; display:flex; gap:16px; align-items:center">
+            <div class="thumb" style="width:76px; height:76px">
+                {% if produit.photoP %}
+                    <img src="{{ asset('uploads/produits/' ~ produit.photoP) }}" alt="{{ produit.nomP }}">
+                {% else %}
+                    <span class="thumb-placeholder">{{ produit.nomP|slice(0, 1)|upper }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <h2 style="margin:0">{{ produit.nomP }}</h2>
+                <p style="color:#777;margin-top:6px">
+                    Catégorie : <strong>{{ produit.categorieP }}</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- ===== INFOS ===== -->
+        <div class="form-section">
+            <h3>Informations générales</h3>
+
+            <div class="form-grid-2">
+                <div class="info-box">
+                    <span class="info-label">Quantité</span>
+                    <span class="info-value">{{ produit.quantiteStock }}</span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">Unité</span>
+                    <span class="info-value">{{ produit.uniteP }}</span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">Date d’ajout</span>
+                    <span class="info-value">
+                        {{ produit.dateAjout ? produit.dateAjout|date('d/m/Y') : '—' }}
+                    </span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">Date d’expiration</span>
+                    <span class="info-value">
+                        {{ produit.dateExpiration ? produit.dateExpiration|date('d/m/Y') : '—' }}
+                    </span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">Emplacement</span>
+                    <span class="info-value">{{ produit.emplacement }}</span>
+                </div>
+
+                <div class="info-box">
+                    <span class="info-label">ID Produit</span>
+                    <span class="info-value">#{{ produit.idP }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:12px">
+                <h3 style="margin:0">Mouvements récents</h3>
+                <a href="{{ path('app_mouvement_index', {'id_p': produit.idP}) }}" class="btn">
+                    Voir tout
+                </a>
+            </div>
+
+            <div class="pack-grid" style="margin-top:16px">
+                {% for mouvement in mouvements %}
+                    <article class="pack-card">
+                        <div class="pack-head">
+                            <a class="item-media" href="{{ path('app_mouvement_show', {'id_mo': mouvement.idMo}) }}">
+                                <div class="item-text">
+                                    <div class="item-title">Mouvement #{{ mouvement.idMo }}</div>
+                                    <div class="item-sub">
+                                        {{ mouvement.dateMouvement ? mouvement.dateMouvement|date('d/m/Y') : '—' }}
+                                    </div>
+                                </div>
+                            </a>
+
+                            <div class="pack-pill {{ mouvement.typeM == 'ENTREE' ? 'success' : 'danger' }}">
+                                {{ mouvement.typeM }}
+                            </div>
+                        </div>
+
+                        <div class="pack-metric">
+                            {{ mouvement.quantite }}
+                            <small>Quantité</small>
+                        </div>
+
+                        <ul class="pack-list">
+                            <li>
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span><strong>Motif :</strong> {{ mouvement.motif ?: '—' }}</span>
+                            </li>
+                        </ul>
+
+                        <div class="pack-actions">
+                            <a href="{{ path('app_mouvement_edit', {'id_mo': mouvement.idMo}) }}" class="btn primary">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                                Modifier
+                            </a>
+                        </div>
+                    </article>
+                {% else %}
+                    <div class="warning">Aucun mouvement pour ce produit</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ===== ACTION DELETE ===== -->
+        <div class="form-actions" style="justify-content:flex-start">
+            {{ include('produit/_delete_form.html.twig') }}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

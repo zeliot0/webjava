@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Produits</title>
+    <style>
+        @page { margin: 18px; }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 11px; color: #111; }
+        h1 { margin: 0; font-size: 18px; }
+        .meta { margin-top: 4px; color: #555; font-size: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+        th, td { border: 1px solid #ddd; padding: 6px 8px; vertical-align: top; }
+        th { background: #f3f3f3; text-align: left; }
+        .num { text-align: right; }
+    </style>
+</head>
+<body>
+<h1>Liste des produits</h1>
+<div class="meta">
+    Généré le {{ generatedAt ? generatedAt|date('d/m/Y H:i') : "now"|date('d/m/Y H:i') }}
+    {% if q %} — Recherche : “{{ q }}”{% endif %}
+    {% if sort %} — Tri : {{ sort }} {{ dir|upper }}{% endif %}
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Produit</th>
+        <th>Catégorie</th>
+        <th class="num">Stock</th>
+        <th>Unité</th>
+        <th>Ajout</th>
+        <th>Expiration</th>
+        <th>Emplacement</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+    {% for produit in produits %}
+        <tr>
+            <td class="num">{{ produit.idP }}</td>
+            <td>{{ produit.nomP }}</td>
+            <td>{{ produit.categorieP }}</td>
+            <td class="num">{{ produit.quantiteStock }}</td>
+            <td>{{ produit.uniteP }}</td>
+            <td>{{ produit.dateAjout ? produit.dateAjout|date('d/m/Y') : '-' }}</td>
+            <td>{{ produit.dateExpiration ? produit.dateExpiration|date('d/m/Y') : '—' }}</td>
+            <td>{{ produit.emplacement }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="8" style="text-align:center; padding:18px; color:#777">
+                Aucun produit
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
+

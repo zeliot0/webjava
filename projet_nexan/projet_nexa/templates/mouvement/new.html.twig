@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Mouvement — NEXA{% endblock %}
+
+{% block body %}
+
+<div class="page-header">
+    <div>
+        <h1>Nouveau mouvement</h1>
+        <p>Ajouter une entrée ou sortie de stock</p>
+    </div>
+
+    <a href="{{ path('app_mouvement_index') }}" class="btn">
+        ← Retour
+    </a>
+</div>
+
+<div class="form-shell">
+    <div class="form-card">
+
+        {{ include('mouvement/_form.html.twig', {'button_label': 'Créer'}) }}
+
+    </div>
+</div>
+
+{% endblock %}
